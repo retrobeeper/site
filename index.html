@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>삐삐 - 레트로 호출기</title>
+  <meta name="description" content="90년대 호출기를 스마트폰으로 되살린 레트로 메신저. 친구에게 삐삐를 쏴보세요.">
+  <meta property="og:title" content="삐삐 - 레트로 호출기">
+  <meta property="og:description" content="90년대 호출기를 스마트폰으로 되살린 레트로 메신저">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #1E1E34;
+      --surface: #282844;
+      --border: #3A3A58;
+      --lcd-bg: #9EAD86;
+      --lcd-text: #1A1C10;
+      --accent: #E94560;
+      --text: #E8E8F4;
+      --text-dim: #8888AA;
+      --mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --sans: 'Noto Sans KR', -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    .hero-icon {
+      font-size: 80px;
+      margin-bottom: 16px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+    }
+
+    .hero-tagline {
+      font-size: 20px;
+      color: var(--text-dim);
+      max-width: 400px;
+      margin-bottom: 48px;
+      line-height: 1.8;
+    }
+
+    /* ── LCD 배너 ── */
+    .lcd-banner {
+      background: var(--lcd-bg);
+      border-radius: 8px;
+      border: 2px solid #8B9B7A;
+      padding: 16px 32px;
+      margin-bottom: 48px;
+      max-width: 360px;
+      width: 100%;
+    }
+
+    .lcd-banner p {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--lcd-text);
+      text-align: center;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 0 rgba(26, 28, 16, 0.3);
+    }
+
+    /* ── 다운로드 버튼 ── */
+    .download-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .download-btn:hover {
+      background: #323256;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .download-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    /* ── Features ── */
+    .features {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .features h2 {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .feature-card .icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ── How it works ── */
+    .how-it-works {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .how-it-works h2 {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .step-num {
+      font-family: var(--mono);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 40px;
+    }
+
+    .step-content h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    footer nav {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--text);
+    }
+
+    footer .copyright {
+      font-size: 13px;
+      color: #555570;
+      font-family: var(--mono);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 36px; }
+      .hero-icon { font-size: 60px; }
+      .hero-tagline { font-size: 17px; }
+      .lcd-banner p { font-size: 15px; }
+      .download-buttons { flex-direction: column; align-items: center; }
+      .download-btn { width: 100%; max-width: 260px; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-icon">📟</div>
+    <h1>삐삐</h1>
+    <p class="hero-subtitle">RETRO PAGER</p>
+    <p class="hero-tagline">
+      90년대 호출기를 스마트폰으로 되살렸습니다.<br>
+      친구에게 삐삐를 쏴보세요.
+    </p>
+
+    <div class="lcd-banner">
+      <p>046-****-**** READY</p>
+    </div>
+
+    <div class="download-buttons">
+      <a href="#" class="download-btn" aria-label="App Store에서 다운로드">
+        <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        App Store
+      </a>
+      <a href="#" class="download-btn" aria-label="Google Play에서 다운로드">
+        <svg viewBox="0 0 24 24"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.61 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
+        Google Play
+      </a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="icon">🔢</span>
+        <h3>나만의 삐삐 번호</h3>
+        <p>046으로 시작하는 고유 번호를 받고, 원하는 뒷번호 4자리를 직접 골라보세요.</p>
+      </div>
+      <div class="feature-card">
+        <span class="icon">📟</span>
+        <h3>레트로 LCD 화면</h3>
+        <p>실제 호출기를 재현한 LCD 디스플레이에서 수신 메시지를 확인하세요.</p>
+      </div>
+      <div class="feature-card">
+        <span class="icon">📞</span>
+        <h3>공중전화 키패드</h3>
+        <p>공중전화 느낌의 키패드로 상대방 번호와 콜백 번호를 입력합니다.</p>
+      </div>
+      <div class="feature-card">
+        <span class="icon">🎤</span>
+        <h3>음성 메시지</h3>
+        <p>최대 30초 음성 메시지를 녹음해 함께 보내고, 사서함에서 재생하세요.</p>
+      </div>
+      <div class="feature-card">
+        <span class="icon">🔔</span>
+        <h3>푸시 알림</h3>
+        <p>새 메시지가 도착하면 바로 알림을 받습니다. 삐삐 울린다!</p>
+      </div>
+      <div class="feature-card">
+        <span class="icon">🌙</span>
+        <h3>다크 레트로 UI</h3>
+        <p>90년대 전자기기 감성을 살린 어두운 톤의 인터페이스.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how-it-works">
+    <h2>How to use</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <h3>호출기 수령</h3>
+          <p>가입 후 원하는 뒷번호 4자리를 골라 나만의 삐삐 번호를 받으세요.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <h3>번호 입력</h3>
+          <p>키패드에서 상대방 삐삐 번호를 입력하고 확인을 누르세요.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <h3>콜백 번호 + 보내기</h3>
+          <p>내 번호를 입력하고, 원하면 음성 메시지도 녹음해서 보내세요.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <div class="step-content">
+          <h3>삐삐 수신</h3>
+          <p>상대방의 호출기 LCD에 내 번호가 뜹니다. 삐삐 쳐!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <nav>
+      <a href="privacy/">개인정보 처리방침</a>
+      <a href="mailto:gamzabaw@gmail.com">문의하기</a>
+    </nav>
+    <p class="copyright">&copy; 2026 삐삐. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
