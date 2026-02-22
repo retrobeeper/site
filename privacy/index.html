@@ -4,98 +4,338 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>개인정보 처리방침 - 삐삐</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fira+Code:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #FDF8F3;
+      --surface: #FFFFFF;
+      --border: #E8DDD2;
+      --accent: #E85D3A;
+      --text: #2C2418;
+      --text-mid: #5C4F3E;
+      --text-dim: #9B8E7E;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'Fira Code', 'Courier New', monospace;
+      --sans: 'Noto Sans KR', -apple-system, sans-serif;
+    }
+
     body {
-      background: #1E1E34;
-      color: #E8E8F4;
-      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
       line-height: 1.8;
       -webkit-font-smoothing: antialiased;
     }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(253, 248, 243, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-logo {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar-logo .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .topbar-back {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .topbar-back:hover { color: var(--text); }
+
+    /* ── Container ── */
     .container {
       max-width: 640px;
       margin: 0 auto;
-      padding: 60px 24px 80px;
+      padding: 48px 24px 100px;
     }
-    a { color: #E94560; }
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
+
+    /* ── Header ── */
+    .page-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-header h1 {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 400;
       margin-bottom: 8px;
+      color: var(--text);
     }
-    .updated {
-      font-size: 13px;
-      color: #8888AA;
-      margin-bottom: 40px;
+    .page-header .updated {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
     }
-    h2 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-top: 36px;
-      margin-bottom: 12px;
-      color: #fff;
-    }
-    p, li {
+
+    /* ── Content ── */
+    .intro {
       font-size: 15px;
-      color: #CCCCDD;
-      margin-bottom: 12px;
+      color: var(--text-mid);
+      margin-bottom: 40px;
+      line-height: 1.9;
+      word-break: keep-all;
     }
-    ul {
+
+    .section {
+      margin-bottom: 36px;
+    }
+
+    .section h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section h2 .num {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      background: #FEF0EC;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section p {
+      font-size: 14px;
+      color: var(--text-mid);
+      margin-bottom: 12px;
+      line-height: 1.9;
+      word-break: keep-all;
+    }
+
+    .section ul {
+      padding-left: 0;
+      margin-bottom: 12px;
+      list-style: none;
+    }
+    .section li {
+      font-size: 14px;
+      color: var(--text-mid);
+      margin-bottom: 10px;
       padding-left: 20px;
-      margin-bottom: 12px;
+      position: relative;
+      line-height: 1.8;
+      word-break: keep-all;
     }
-    .back {
-      display: inline-block;
-      margin-bottom: 32px;
-      color: #8888AA;
+    .section li::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 10px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .section li strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ── Info card ── */
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-top: 8px;
+    }
+    .info-card-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+    }
+    .info-card-row + .info-card-row {
+      border-top: 1px solid var(--border);
+    }
+    .info-card-row .label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 100px;
+      flex-shrink: 0;
+    }
+    .info-card-row .value {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    /* ── Contact ── */
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
       text-decoration: none;
       font-size: 14px;
+      font-weight: 500;
+      transition: opacity 0.2s;
     }
-    .back:hover { color: #E8E8F4; }
+    .contact-link:hover { opacity: 0.7; }
+
+    /* ── Footer ── */
+    .page-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      margin-top: 48px;
+      text-align: center;
+    }
+    .page-footer p {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .topbar { padding: 16px 20px; }
+      .container { padding: 32px 20px 80px; }
+      .page-header h1 { font-size: 26px; }
+      .info-card-row { flex-direction: column; gap: 4px; }
+      .info-card-row .label { min-width: unset; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <a href="../" class="topbar-logo">
+      <span class="dot"></span>
+      삐삐
+    </a>
+    <a href="../" class="topbar-back">&larr; 홈으로</a>
+  </header>
+
   <div class="container">
-    <a href="index.html" class="back">&larr; 홈으로</a>
-    <h1>개인정보 처리방침</h1>
-    <p class="updated">최종 수정일: 2026년 2월 18일</p>
 
-    <p>"삐삐" (이하 "앱")는 이용자의 개인정보를 소중히 여기며, 관련 법령에 따라 아래와 같이 개인정보를 처리합니다.</p>
+    <!-- Header -->
+    <div class="page-header">
+      <h1>개인정보 처리방침</h1>
+      <p class="updated">최종 수정일: 2026년 2월 18일</p>
+    </div>
 
-    <h2>1. 수집하는 개인정보</h2>
-    <ul>
-      <li><strong>계정 정보:</strong> Google 로그인을 통해 이메일 주소와 고유 사용자 식별자(User ID)를 수집합니다.</li>
-      <li><strong>서비스 데이터:</strong> 삐삐 번호, 발신/수신 메시지 기록, 음성 메시지 파일을 처리합니다.</li>
-    </ul>
+    <p class="intro">
+      삐삐(이하 "앱")는 이용자의 개인정보를 소중히 여기며,
+      「개인정보 보호법」 등 관련 법령에 따라 아래와 같이 개인정보를 처리합니다.
+    </p>
 
-    <h2>2. 개인정보 수집 목적</h2>
-    <ul>
-      <li>회원 가입 및 본인 확인</li>
-      <li>삐삐 번호 부여 및 메시지 송수신 서비스 제공</li>
-      <li>푸시 알림 발송</li>
-    </ul>
+    <!-- 1 -->
+    <div class="section">
+      <h2><span class="num">1</span> 수집하는 개인정보</h2>
+      <ul>
+        <li><strong>계정 정보</strong> — Google 로그인을 통해 이메일 주소와 고유 사용자 식별자(User ID)를 수집합니다.</li>
+        <li><strong>서비스 데이터</strong> — 삐삐 번호, 발신·수신 메시지 기록, 음성 메시지 파일을 처리합니다.</li>
+        <li><strong>기기 정보</strong> — 푸시 알림 전송을 위해 기기 토큰을 수집합니다.</li>
+      </ul>
+    </div>
 
-    <h2>3. 개인정보 보유 및 이용 기간</h2>
-    <p>이용자가 서비스를 탈퇴하거나 삭제를 요청할 경우 지체 없이 해당 정보를 파기합니다. 음성 메시지는 수신 후 7일이 경과하면 자동 삭제됩니다.</p>
+    <!-- 2 -->
+    <div class="section">
+      <h2><span class="num">2</span> 수집 및 이용 목적</h2>
+      <ul>
+        <li>회원 가입 및 본인 확인</li>
+        <li>삐삐 번호 부여 및 메시지 송·수신 서비스 제공</li>
+        <li>푸시 알림 발송</li>
+        <li>서비스 개선 및 오류 대응</li>
+      </ul>
+    </div>
 
-    <h2>4. 개인정보의 제3자 제공</h2>
-    <p>앱은 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만, 서비스 운영을 위해 아래 인프라를 이용합니다:</p>
-    <ul>
-      <li><strong>Supabase:</strong> 인증, 데이터베이스, 파일 저장 (서버 위치: 미국)</li>
-      <li><strong>Expo Push Notifications:</strong> 푸시 알림 전송</li>
-    </ul>
+    <!-- 3 -->
+    <div class="section">
+      <h2><span class="num">3</span> 보유 및 파기</h2>
+      <p>이용자가 서비스를 탈퇴하거나 삭제를 요청할 경우 지체 없이 해당 정보를 파기합니다.</p>
+      <ul>
+        <li><strong>호출 기록</strong> — 최대 20건 저장, 초과분은 오래된 순으로 자동 삭제</li>
+        <li><strong>음성 메시지</strong> — 최대 20건 저장, 이용자가 직접 삭제</li>
+        <li><strong>계정 정보</strong> — 탈퇴 요청 시 즉시 파기</li>
+      </ul>
+    </div>
 
-    <h2>5. 이용자의 권리</h2>
-    <p>이용자는 언제든지 자신의 개인정보에 대해 열람, 수정, 삭제를 요청할 수 있습니다. 계정 삭제를 원하시면 아래 연락처로 요청해주세요.</p>
+    <!-- 4 -->
+    <div class="section">
+      <h2><span class="num">4</span> 제3자 제공 및 위탁</h2>
+      <p>앱은 이용자의 개인정보를 외부에 판매하거나 제3자에게 제공하지 않습니다. 다만, 서비스 운영을 위해 아래 인프라를 이용합니다.</p>
+      <div class="info-card">
+        <div class="info-card-row">
+          <span class="label">Supabase</span>
+          <span class="value">인증, 데이터베이스, 푸시 알림 (서버 위치: 미국)</span>
+        </div>
+        <div class="info-card-row">
+          <span class="label">Cloudflare R2</span>
+          <span class="value">음성 메시지 파일 저장 (서버 위치: 글로벌)</span>
+        </div>
+      </div>
+    </div>
 
-    <h2>6. 보안</h2>
-    <p>모든 데이터 전송은 HTTPS(TLS)를 통해 암호화되며, 인증 정보는 안전하게 관리됩니다.</p>
+    <!-- 5 -->
+    <div class="section">
+      <h2><span class="num">5</span> 이용자의 권리</h2>
+      <p>이용자는 언제든지 자신의 개인정보에 대해 열람, 수정, 삭제를 요청할 수 있습니다. 계정 삭제를 원하실 경우 아래 연락처로 요청해주세요.</p>
+    </div>
 
-    <h2>7. 문의</h2>
-    <p>개인정보 관련 문의사항은 아래로 연락해주세요.</p>
-    <p><strong>이메일:</strong> <a href="mailto:gamzabaw@gmail.com">gamzabaw@gmail.com</a></p>
+    <!-- 6 -->
+    <div class="section">
+      <h2><span class="num">6</span> 보안 조치</h2>
+      <p>모든 데이터 전송은 HTTPS(TLS)를 통해 암호화되며, 인증 정보는 업계 표준에 따라 안전하게 관리됩니다.</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="section">
+      <h2><span class="num">7</span> 문의</h2>
+      <p>개인정보 관련 문의사항은 아래로 연락해주세요.</p>
+      <a href="mailto:support@pineple.com" class="contact-link">
+        support@pineple.com &rarr;
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+      <p>&copy; 2026 삐삐. All rights reserved.</p>
+    </div>
+
   </div>
 </body>
 </html>

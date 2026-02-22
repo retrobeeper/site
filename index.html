@@ -9,22 +9,37 @@
   <meta property="og:description" content="90년대 호출기를 스마트폰으로 되살린 레트로 메신저">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fira+Code:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #1E1E34;
-      --surface: #282844;
-      --border: #3A3A58;
-      --lcd-bg: #9EAD86;
-      --lcd-text: #1A1C10;
-      --accent: #E94560;
-      --text: #E8E8F4;
-      --text-dim: #8888AA;
-      --mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --bg: #FDF8F3;
+      --bg-warm: #FBF3EB;
+      --surface: #FFFFFF;
+      --surface-alt: #F5EDE4;
+      --border: #E8DDD2;
+      --border-light: #F0E8DE;
+      --lcd-bg: #C8E6C0;
+      --lcd-bg-deep: #A8D4A0;
+      --lcd-text: #2A4A28;
+      --lcd-glow: rgba(168, 212, 160, 0.4);
+      --accent: #E85D3A;
+      --accent-soft: #F4A28C;
+      --accent-bg: #FEF0EC;
+      --text: #2C2418;
+      --text-mid: #5C4F3E;
+      --text-dim: #9B8E7E;
+      --peach: #FDDCC6;
+      --mint: #D4F0D0;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'Fira Code', 'Courier New', monospace;
       --sans: 'Noto Sans KR', -apple-system, sans-serif;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
@@ -32,6 +47,96 @@
       font-family: var(--sans);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Stagger children ── */
+    .stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+    .stagger > .reveal:nth-child(2) { transition-delay: 0.08s; }
+    .stagger > .reveal:nth-child(3) { transition-delay: 0.16s; }
+    .stagger > .reveal:nth-child(4) { transition-delay: 0.24s; }
+    .stagger > .reveal:nth-child(5) { transition-delay: 0.32s; }
+    .stagger > .reveal:nth-child(6) { transition-delay: 0.40s; }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(253, 248, 243, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .topbar.scrolled {
+      border-bottom-color: var(--border-light);
+    }
+    .topbar-logo {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar-logo .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .topbar-cta {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 8px 20px;
+      border: 1.5px solid var(--accent);
+      border-radius: 100px;
+      transition: all 0.25s var(--ease-out-expo);
+      letter-spacing: 0.02em;
+    }
+    .topbar-cta:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
     }
 
     /* ── Hero ── */
@@ -42,68 +147,176 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 40px 24px;
+      padding: 120px 24px 80px;
+      position: relative;
     }
 
-    .hero-icon {
-      font-size: 80px;
-      margin-bottom: 16px;
-      animation: float 3s ease-in-out infinite;
+    /* Decorative background shapes */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--peach) 0%, transparent 70%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -50px;
+      left: -150px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--mint) 0%, transparent 70%);
+      opacity: 0.4;
+      pointer-events: none;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+      letter-spacing: 0.02em;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: blink 1.5s ease-in-out infinite;
     }
 
     .hero h1 {
-      font-size: 48px;
-      font-weight: 700;
+      font-family: var(--serif);
+      font-size: 72px;
+      font-weight: 400;
       margin-bottom: 8px;
-      letter-spacing: -1px;
+      letter-spacing: -2px;
+      color: var(--text);
+      line-height: 1.1;
     }
 
     .hero-subtitle {
       font-family: var(--mono);
-      font-size: 16px;
+      font-size: 14px;
       color: var(--text-dim);
-      letter-spacing: 2px;
-      margin-bottom: 40px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
     }
 
     .hero-tagline {
-      font-size: 20px;
-      color: var(--text-dim);
-      max-width: 400px;
+      font-size: 18px;
+      color: var(--text-mid);
+      max-width: 380px;
       margin-bottom: 48px;
-      line-height: 1.8;
+      line-height: 1.9;
+      word-break: keep-all;
     }
 
-    /* ── LCD 배너 ── */
-    .lcd-banner {
+    /* ── Pager illustration (CSS-drawn) ── */
+    .pager-device {
+      width: 280px;
+      background: linear-gradient(145deg, #3A3A3A 0%, #2A2A2A 50%, #1E1E1E 100%);
+      border-radius: 24px;
+      padding: 24px 20px 32px;
+      margin-bottom: 48px;
+      box-shadow:
+        0 2px 0 #4A4A4A,
+        0 24px 48px rgba(0,0,0,0.15),
+        0 8px 24px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      position: relative;
+      animation: floatDevice 4s ease-in-out infinite;
+    }
+    @keyframes floatDevice {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-10px) rotate(0.5deg); }
+    }
+    .pager-device::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 4px;
+      background: #555;
+      border-radius: 2px;
+    }
+    .pager-screen {
       background: var(--lcd-bg);
       border-radius: 8px;
-      border: 2px solid #8B9B7A;
-      padding: 16px 32px;
-      margin-bottom: 48px;
-      max-width: 360px;
-      width: 100%;
+      padding: 16px 20px;
+      margin-top: 8px;
+      border: 2px solid #8BAA82;
+      position: relative;
+      overflow: hidden;
     }
-
-    .lcd-banner p {
+    .pager-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+    }
+    .pager-screen-text {
       font-family: var(--mono);
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--lcd-text);
       text-align: center;
       letter-spacing: 2px;
-      text-shadow: 1px 1px 0 rgba(26, 28, 16, 0.3);
+      position: relative;
+      text-shadow: 1px 1px 0 rgba(42, 74, 40, 0.2);
+      min-height: 1.4em;
     }
+    .pager-screen-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: rgba(42, 74, 40, 0.5);
+      text-align: right;
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+    .pager-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .pager-btn {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #555;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .pager-btn.active { background: var(--accent); box-shadow: 0 0 8px rgba(232, 93, 58, 0.4); }
 
-    /* ── 다운로드 버튼 ── */
+    /* ── Download buttons ── */
     .download-buttons {
       display: flex;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
     }
@@ -112,128 +325,314 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
+      background: var(--text);
+      color: var(--bg);
       text-decoration: none;
       padding: 14px 28px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      transition: all 0.2s;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s var(--ease-out-expo);
+      box-shadow: 0 4px 16px rgba(44, 36, 24, 0.12);
     }
 
     .download-btn:hover {
-      background: #323256;
-      border-color: var(--accent);
       transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(44, 36, 24, 0.18);
     }
 
     .download-btn svg {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       fill: currentColor;
     }
 
-    /* ── Features ── */
-    .features {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 80px 24px;
-    }
-
-    .features h2 {
+    /* ── Section styling ── */
+    .section-label {
       font-family: var(--mono);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--accent);
       letter-spacing: 4px;
       text-transform: uppercase;
       text-align: center;
-      margin-bottom: 48px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 56px;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    /* ── Features ── */
+    .features {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 24px 100px;
     }
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
 
     .feature-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px 24px;
-      text-align: center;
+      border-radius: 20px;
+      padding: 32px 24px 28px;
+      text-align: left;
+      transition: all 0.35s var(--ease-out-expo);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-soft), var(--accent));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(44, 36, 24, 0.08);
+      border-color: var(--accent-soft);
+    }
+    .feature-card:hover::before {
+      opacity: 1;
     }
 
-    .feature-card .icon {
-      font-size: 36px;
-      margin-bottom: 16px;
-      display: block;
+    .feature-card .icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
     }
+    .feature-card:nth-child(1) .icon-wrap { background: #FEF0EC; }
+    .feature-card:nth-child(2) .icon-wrap { background: #ECF8EA; }
+    .feature-card:nth-child(3) .icon-wrap { background: #FFF4E6; }
+    .feature-card:nth-child(4) .icon-wrap { background: #F0ECFE; }
+    .feature-card:nth-child(5) .icon-wrap { background: #FEECF4; }
+    .feature-card:nth-child(6) .icon-wrap { background: #ECF4FE; }
 
     .feature-card h3 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       margin-bottom: 8px;
+      color: var(--text);
     }
 
     .feature-card p {
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--text-dim);
-      line-height: 1.6;
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .divider-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
     }
 
     /* ── How it works ── */
     .how-it-works {
-      max-width: 600px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 40px 24px 80px;
-    }
-
-    .how-it-works h2 {
-      font-family: var(--mono);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: 48px;
+      padding: 100px 24px;
     }
 
     .steps {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 0;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      left: 27px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-soft), var(--border));
+      border-radius: 1px;
     }
 
     .step {
       display: flex;
       align-items: flex-start;
-      gap: 20px;
+      gap: 24px;
+      padding: 24px 0;
+      position: relative;
     }
 
-    .step-num {
+    .step-marker {
+      width: 56px;
+      height: 56px;
+      min-width: 56px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: var(--mono);
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1;
-      min-width: 40px;
-    }
-
-    .step-content h3 {
       font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 4px;
+      font-weight: 600;
+      color: var(--accent);
+      transition: all 0.3s var(--ease-out-expo);
+      position: relative;
+      z-index: 1;
+    }
+    .step:hover .step-marker {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      transform: scale(1.08);
+      box-shadow: 0 4px 20px rgba(232, 93, 58, 0.25);
     }
 
-    .step-content p {
+    .step-body {
+      padding-top: 14px;
+    }
+    .step-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .step-body p {
       font-size: 14px;
       color: var(--text-dim);
+      line-height: 1.7;
+      word-break: keep-all;
     }
+
+    /* ── CTA banner ── */
+    .cta-section {
+      padding: 40px 24px 100px;
+    }
+    .cta-banner {
+      max-width: 720px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--text) 0%, #3D3428 100%);
+      border-radius: 28px;
+      padding: 56px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(232, 93, 58, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(168, 212, 160, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-banner > * { position: relative; z-index: 1; }
+    .cta-banner .lcd-inline {
+      display: inline-block;
+      background: var(--lcd-bg);
+      border-radius: 8px;
+      padding: 10px 24px;
+      margin-bottom: 24px;
+      border: 2px solid #8BAA82;
+    }
+    .cta-banner .lcd-inline span {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--lcd-text);
+      letter-spacing: 2px;
+    }
+    .cta-banner h2 {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 400;
+      color: #F8F3EE;
+      margin-bottom: 12px;
+    }
+    .cta-banner p {
+      color: rgba(248, 243, 238, 0.6);
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cta-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s var(--ease-out-expo);
+      box-shadow: 0 4px 20px rgba(232, 93, 58, 0.3);
+    }
+    .cta-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(232, 93, 58, 0.4);
+    }
+    .cta-btn-primary svg { width: 18px; height: 18px; fill: currentColor; }
+    .cta-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(248, 243, 238, 0.9);
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.3s var(--ease-out-expo);
+    }
+    .cta-btn-secondary:hover {
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-2px);
+    }
+    .cta-btn-secondary svg { width: 18px; height: 18px; fill: currentColor; }
 
     /* ── Footer ── */
     footer {
@@ -246,14 +645,14 @@
       display: flex;
       justify-content: center;
       gap: 32px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
     footer a {
       color: var(--text-dim);
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
       transition: color 0.2s;
     }
 
@@ -262,39 +661,110 @@
     }
 
     footer .copyright {
-      font-size: 13px;
-      color: #555570;
+      font-size: 12px;
+      color: var(--text-dim);
       font-family: var(--mono);
+      letter-spacing: 0.5px;
     }
 
     /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .hero h1 { font-size: 52px; }
+      .section-title { font-size: 28px; }
+      .cta-banner { padding: 40px 28px; }
+      .cta-banner h2 { font-size: 26px; }
+    }
+
     @media (max-width: 480px) {
-      .hero h1 { font-size: 36px; }
-      .hero-icon { font-size: 60px; }
-      .hero-tagline { font-size: 17px; }
-      .lcd-banner p { font-size: 15px; }
-      .download-buttons { flex-direction: column; align-items: center; }
-      .download-btn { width: 100%; max-width: 260px; justify-content: center; }
+      .topbar { padding: 16px 20px; }
+      .topbar-logo { font-size: 18px; }
+      .hero { padding: 100px 20px 60px; }
+      .hero h1 { font-size: 42px; letter-spacing: -1px; }
+      .hero-tagline { font-size: 16px; }
+      .pager-device { width: 240px; }
+      .pager-screen-text { font-size: 15px; }
+      .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .feature-card { padding: 24px 20px; }
+      .download-buttons, .cta-buttons { flex-direction: column; align-items: center; }
+      .download-btn, .cta-btn-primary, .cta-btn-secondary { width: 100%; max-width: 260px; justify-content: center; }
+      .steps::before { left: 23px; }
+      .step-marker { width: 48px; height: 48px; min-width: 48px; font-size: 14px; }
+      .step { gap: 16px; }
+      .cta-banner { padding: 36px 20px; border-radius: 20px; }
+      .cta-banner h2 { font-size: 24px; }
+      .section-title { font-size: 26px; margin-bottom: 40px; }
+    }
+
+    /* ── LCD typing animation ── */
+    .lcd-typing {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--lcd-text);
+      animation: typing 2s steps(18) 0.5s forwards, cursorBlink 0.8s step-end infinite;
+      width: 0;
+      display: inline-block;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes cursorBlink {
+      50% { border-color: transparent; }
+    }
+
+    /* ── Scroll-triggered line ── */
+    .steps .step.visible .step-marker {
+      animation: popIn 0.5s var(--ease-out-expo);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Top bar -->
+  <header class="topbar" id="topbar">
+    <a href="/" class="topbar-logo">
+      <span class="dot"></span>
+      삐삐
+    </a>
+    <a href="#download" class="topbar-cta">다운로드</a>
+  </header>
+
   <!-- Hero -->
   <section class="hero">
-    <div class="hero-icon">📟</div>
-    <h1>삐삐</h1>
-    <p class="hero-subtitle">RETRO PAGER</p>
-    <p class="hero-tagline">
+    <div class="hero-badge reveal">지금 무료 다운로드</div>
+
+    <h1 class="reveal" style="transition-delay: 0.1s;">삐삐</h1>
+    <p class="hero-subtitle reveal" style="transition-delay: 0.2s;">RETRO PAGER</p>
+    <p class="hero-tagline reveal" style="transition-delay: 0.3s;">
       90년대 호출기를 스마트폰으로 되살렸습니다.<br>
       친구에게 삐삐를 쏴보세요.
     </p>
 
-    <div class="lcd-banner">
-      <p>046-****-**** READY</p>
+    <!-- CSS Pager Device -->
+    <div class="pager-device reveal" style="transition-delay: 0.4s;">
+      <div class="pager-screen">
+        <div class="pager-screen-text" id="lcdText"></div>
+        <div class="pager-screen-label">MSG 01</div>
+      </div>
+      <div class="pager-buttons">
+        <div class="pager-btn active"></div>
+        <div class="pager-btn"></div>
+        <div class="pager-btn"></div>
+      </div>
     </div>
 
-    <div class="download-buttons">
+    <div class="download-buttons reveal" style="transition-delay: 0.5s;" id="download">
       <a href="#" class="download-btn" aria-label="App Store에서 다운로드">
         <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         App Store
@@ -308,72 +778,97 @@
 
   <!-- Features -->
   <section class="features">
-    <h2>Features</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <span class="icon">🔢</span>
+    <p class="section-label reveal">Features</p>
+    <h2 class="section-title reveal">그때 그 설렘, 다시 한번</h2>
+    <div class="feature-grid stagger">
+      <div class="feature-card reveal">
+        <div class="icon-wrap">🔢</div>
         <h3>나만의 삐삐 번호</h3>
         <p>046으로 시작하는 고유 번호를 받고, 원하는 뒷번호 4자리를 직접 골라보세요.</p>
       </div>
-      <div class="feature-card">
-        <span class="icon">📟</span>
+      <div class="feature-card reveal">
+        <div class="icon-wrap">📟</div>
         <h3>레트로 LCD 화면</h3>
         <p>실제 호출기를 재현한 LCD 디스플레이에서 수신 메시지를 확인하세요.</p>
       </div>
-      <div class="feature-card">
-        <span class="icon">📞</span>
+      <div class="feature-card reveal">
+        <div class="icon-wrap">📞</div>
         <h3>공중전화 키패드</h3>
         <p>공중전화 느낌의 키패드로 상대방 번호와 콜백 번호를 입력합니다.</p>
       </div>
-      <div class="feature-card">
-        <span class="icon">🎤</span>
+      <div class="feature-card reveal">
+        <div class="icon-wrap">🎤</div>
         <h3>음성 메시지</h3>
         <p>최대 30초 음성 메시지를 녹음해 함께 보내고, 사서함에서 재생하세요.</p>
       </div>
-      <div class="feature-card">
-        <span class="icon">🔔</span>
+      <div class="feature-card reveal">
+        <div class="icon-wrap">🔔</div>
         <h3>푸시 알림</h3>
         <p>새 메시지가 도착하면 바로 알림을 받습니다. 삐삐 울린다!</p>
       </div>
-      <div class="feature-card">
-        <span class="icon">🌙</span>
-        <h3>다크 레트로 UI</h3>
-        <p>90년대 전자기기 감성을 살린 어두운 톤의 인터페이스.</p>
+      <div class="feature-card reveal">
+        <div class="icon-wrap">✨</div>
+        <h3>레트로 감성 UI</h3>
+        <p>90년대 전자기기 감성을 살린 디테일한 인터페이스 디자인.</p>
       </div>
     </div>
   </section>
 
+  <div class="divider"><div class="divider-line"></div></div>
+
   <!-- How it works -->
   <section class="how-it-works">
-    <h2>How to use</h2>
-    <div class="steps">
-      <div class="step">
-        <span class="step-num">01</span>
-        <div class="step-content">
+    <p class="section-label reveal">How to use</p>
+    <h2 class="section-title reveal">삐삐 쳐! 4단계면 끝</h2>
+    <div class="steps stagger">
+      <div class="step reveal">
+        <div class="step-marker">01</div>
+        <div class="step-body">
           <h3>호출기 수령</h3>
           <p>가입 후 원하는 뒷번호 4자리를 골라 나만의 삐삐 번호를 받으세요.</p>
         </div>
       </div>
-      <div class="step">
-        <span class="step-num">02</span>
-        <div class="step-content">
+      <div class="step reveal">
+        <div class="step-marker">02</div>
+        <div class="step-body">
           <h3>번호 입력</h3>
           <p>키패드에서 상대방 삐삐 번호를 입력하고 확인을 누르세요.</p>
         </div>
       </div>
-      <div class="step">
-        <span class="step-num">03</span>
-        <div class="step-content">
+      <div class="step reveal">
+        <div class="step-marker">03</div>
+        <div class="step-body">
           <h3>콜백 번호 + 보내기</h3>
           <p>내 번호를 입력하고, 원하면 음성 메시지도 녹음해서 보내세요.</p>
         </div>
       </div>
-      <div class="step">
-        <span class="step-num">04</span>
-        <div class="step-content">
+      <div class="step reveal">
+        <div class="step-marker">04</div>
+        <div class="step-body">
           <h3>삐삐 수신</h3>
           <p>상대방의 호출기 LCD에 내 번호가 뜹니다. 삐삐 쳐!</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-section">
+    <div class="cta-banner reveal">
+      <div class="lcd-inline">
+        <span>삐삐 쳐!</span>
+      </div>
+      <h2>다시 그때처럼</h2>
+      <p>90년대 감성 그대로, 지금 바로 시작하세요.</p>
+      <div class="cta-buttons">
+        <a href="#" class="cta-btn-primary">
+          <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          App Store
+        </a>
+        <a href="#" class="cta-btn-secondary">
+          <svg viewBox="0 0 24 24"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.61 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
+          Google Play
+        </a>
       </div>
     </div>
   </section>
@@ -382,10 +877,78 @@
   <footer>
     <nav>
       <a href="privacy/">개인정보 처리방침</a>
-      <a href="mailto:gamzabaw@gmail.com">문의하기</a>
+      <a href="mailto:support@pineple.com">문의하기</a>
     </nav>
     <p class="copyright">&copy; 2026 삐삐. All rights reserved.</p>
   </footer>
+
+  <script>
+    // ── Scroll reveal observer ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Topbar scroll effect ──
+    const topbar = document.getElementById('topbar');
+    window.addEventListener('scroll', () => {
+      topbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // ── LCD typewriter effect ──
+    const lcdEl = document.getElementById('lcdText');
+    const messages = [
+      '046-1234-5678',
+      'CALL ME BACK ♥',
+      '8282 (빨리빨리)',
+      '1004 (천사)',
+      '486 (사랑해)',
+    ];
+    let msgIndex = 0;
+
+    function typeMessage(text, callback) {
+      lcdEl.textContent = '';
+      let i = 0;
+      const interval = setInterval(() => {
+        lcdEl.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          setTimeout(callback, 2400);
+        }
+      }, 90);
+    }
+
+    function eraseMessage(callback) {
+      const text = lcdEl.textContent;
+      let i = text.length;
+      const interval = setInterval(() => {
+        lcdEl.textContent = text.substring(0, i);
+        i--;
+        if (i < 0) {
+          clearInterval(interval);
+          setTimeout(callback, 300);
+        }
+      }, 40);
+    }
+
+    function cycleMessages() {
+      typeMessage(messages[msgIndex], () => {
+        eraseMessage(() => {
+          msgIndex = (msgIndex + 1) % messages.length;
+          cycleMessages();
+        });
+      });
+    }
+
+    // Start after a small delay
+    setTimeout(cycleMessages, 800);
+  </script>
 
 </body>
 </html>
